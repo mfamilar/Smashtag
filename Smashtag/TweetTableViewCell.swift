@@ -37,9 +37,26 @@ class TweetTableViewCell: UITableViewCell {
                 for _ in tweet.media {
                     tweetTextLabel.text! += " 📷"
                 }
+                var attrsString =  NSMutableAttributedString(string:tweetTextLabel.text!);
+                for mention in tweet.userMentions {
+                    let color = UIColor.red;
+                    let textToFind = mention.keyword
+                    
+//                    let attrsString =  NSMutableAttributedString(string:tweetTextLabel.text!);
+                    
+                    // search for word occurrence
+                    let range = (tweetTextLabel.text! as NSString).range(of: textToFind)
+                    if (range.length > 0) {
+                        attrsString.addAttribute(NSForegroundColorAttributeName,value:color,range:range)
+                    }
+                    
+                    // set attributed text
+                    tweetTextLabel.attributedText = attrsString
+                }
             }
         }
-        
+    
+
         var tweetUserName: String {
             return tweet?.user.name ?? ""
         }
@@ -48,10 +65,13 @@ class TweetTableViewCell: UITableViewCell {
         
         
         if let profileImageURL = tweet?.user.profileImageURL {
+            let lastprofileImageURL = profileImageURL
             DispatchQueue.global(qos: .userInteractive).async {
                 DispatchQueue.main.async { [weak weakSelf = self] in
-                    if let imageData = NSData(contentsOf: profileImageURL as URL) {
-                        weakSelf?.tweetProfileImageView?.image = UIImage(data: imageData as Data)
+                    if profileImageURL == lastprofileImageURL {   
+                        if let imageData = NSData(contentsOf: profileImageURL as URL) {
+                            weakSelf?.tweetProfileImageView?.image = UIImage(data: imageData as Data)
+                        }
                     }
                 }
             }
