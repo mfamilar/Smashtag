@@ -40,22 +40,21 @@ class TweetTableViewCell: UITableViewCell {
             }
         }
         
-        var userName: String {
-            if tweet?.user != nil {
-                return tweet!.user.name
-            } else {
-                return ""
-            }
+        var tweetUserName: String {
+            return tweet?.user.name ?? ""
         }
         
-//        tweetScreenNameLabel?.text = "\(tweet?.user)" //tweet user description
-        tweetScreenNameLabel?.text = "\(userName)" //tweet user description
+        tweetScreenNameLabel?.text = "\(tweetUserName)" //tweet user description
+        
         
         if let profileImageURL = tweet?.user.profileImageURL {
-            if let imageData = NSData(contentsOf: profileImageURL as URL) { // block main thread!
-                tweetProfileImageView?.image = UIImage(data: imageData as Data)
+            DispatchQueue.global(qos: .userInteractive).async {
+                DispatchQueue.main.async { [weak weakSelf = self] in
+                    if let imageData = NSData(contentsOf: profileImageURL as URL) {
+                        weakSelf?.tweetProfileImageView?.image = UIImage(data: imageData as Data)
+                    }
+                }
             }
-            
         }
         
         let formatter = DateFormatter()

@@ -9,7 +9,7 @@
 import UIKit
 import Twitter
 
-class TweetTableViewController: UITableViewController {
+class TweetTableViewController: UITableViewController, UITextFieldDelegate {
 
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
@@ -39,7 +39,7 @@ class TweetTableViewController: UITableViewController {
             lastTwitterRequest = request
             request.fetchTweets { [weak weakSelf = self] newTweets in
                 DispatchQueue.main.async {
-                    if request == weakSelf?.lastTwitterRequest {
+                    if request === weakSelf?.lastTwitterRequest {
                         if !newTweets.isEmpty {
                             weakSelf?.tweets.insert(newTweets, at: 0)
                         }
@@ -53,22 +53,15 @@ class TweetTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        searchText = "#daftpunk"
     }
 
     // MARK: - UITableViewDataSource
     
-    var counter0 = 0
-    var counter1 = 0
-    var counter2 = 0
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        counter0 += 1
         return tweets.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        counter1 += 1
         return tweets[section].count
     }
 
@@ -79,7 +72,6 @@ class TweetTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.TweetCellIdentifier, for: indexPath)
 
-        counter2 += 1
         let tweet = tweets[indexPath.section][indexPath.row]
         if let tweetCell = cell as? TweetTableViewCell {
             tweetCell.tweet = tweet
@@ -87,7 +79,20 @@ class TweetTableViewController: UITableViewController {
 
         return cell
     }
+    
+    @IBOutlet weak var searchTextField: UITextField! {
+        didSet {
+            searchTextField.delegate = self
+            searchTextField.text = searchText
+        }
+    }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        searchText = textField.text
+        return true
+    }
+    
     // MARK: - Navigation
 
     /*
