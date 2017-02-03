@@ -11,38 +11,46 @@ import Twitter
 
 class TweetDetailTableViewController: UITableViewController {
     
+    private let sections = ["Images", "Hashtags", "Users", "URLs"]
+    
+    private var details = [[String]]()
+    
     var tweet: Twitter.Tweet? {
         didSet {
-            data.append([])
-            for mention in (tweet?.userMentions)! {
-             mentions.append(mention.keyword)
+            if let tweet = self.tweet {
+                let data = getData(tweet: tweet)
+                
+                details.append([])
+                details.append(data.0)
+                details.append(data.1)
+                details.append(data.2)
             }
-            for hashtag in (tweet?.hashtags)! {
-             hashtags.append(hashtag.keyword)
-            }
-            for url in (tweet?.urls)! {
-             urls.append(url.keyword)
-            }
-//            tableView.reloadData()
-            data.append(mentions)
-            data.append(hashtags)
-            data.append(urls)
-            print(data)
         }
     }
     
-    let sections = ["Images", "Hashtags", "Users", "URLs"]
+    private struct Storyboard {
+        static let Detail = "Detail"
+    }
     
-    var data = [[String]]()
-    var mentions = [String]()
-    var hashtags = [String]()
-    var urls = [String]()
+    private func getData(tweet: Twitter.Tweet) -> ([String], [String], [String]) {
+        var mentions = [String]()
+        var hashtags = [String]()
+        var urls = [String]()
+        
+        for hashtag in (tweet.hashtags) {
+            hashtags.append(hashtag.keyword)
+        }
+        for mention in (tweet.userMentions) {
+            mentions.append(mention.keyword)
+        }
+        for url in (tweet.urls) {
+            urls.append(url.keyword)
+        }
+        return (hashtags, mentions, urls)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print(tweet)
-        tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -54,18 +62,22 @@ class TweetDetailTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].count
+        return details[section].count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Detail, for: indexPath)
 
-        // Configure the cell...
-        cell.textLabel?.text = self.data[indexPath.section][indexPath.row]
+        let detail = self.details[indexPath.section][indexPath.row]
+        if let tweetDetail = cell as? TweetDetailTableViewCell {
+            tweetDetail.detail = detail
+        }
 
         return cell
     }
 
+    
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
