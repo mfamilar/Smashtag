@@ -11,43 +11,60 @@ import Twitter
 
 class TweetDetailTableViewController: UITableViewController {
     
-    var tweet: Twitter.Tweet?
+    var tweet: Twitter.Tweet? {
+        didSet {
+            data.append([])
+            for mention in (tweet?.userMentions)! {
+             mentions.append(mention.keyword)
+            }
+            for hashtag in (tweet?.hashtags)! {
+             hashtags.append(hashtag.keyword)
+            }
+            for url in (tweet?.urls)! {
+             urls.append(url.keyword)
+            }
+//            tableView.reloadData()
+            data.append(mentions)
+            data.append(hashtags)
+            data.append(urls)
+            print(data)
+        }
+    }
+    
+    let sections = ["Images", "Hashtags", "Users", "URLs"]
+    
+    var data = [[String]]()
+    var mentions = [String]()
+    var hashtags = [String]()
+    var urls = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+//        print(tweet)
+        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section]
     }
-
-    // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 4
+        return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return data[section].count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath)
 
         // Configure the cell...
+        cell.textLabel?.text = self.data[indexPath.section][indexPath.row]
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.

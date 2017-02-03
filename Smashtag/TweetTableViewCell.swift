@@ -64,7 +64,7 @@ class TweetTableViewCell: UITableViewCell {
     
 
         var tweetUserName: String {
-            return tweet?.user.name ?? ""
+            return tweet?.user.description ?? ""
         }
         
         tweetScreenNameLabel?.text = "\(tweetUserName)" //tweet user description
