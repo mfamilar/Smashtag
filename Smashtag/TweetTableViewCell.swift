@@ -22,36 +22,42 @@ class TweetTableViewCell: UITableViewCell {
         }
     }
     
+    private func highlightTweetTextLabel(textLabel: NSMutableAttributedString, textToHighlight: Tweet.IndexedKeyword) {
+        let color = highlight[textToHighlight.keyword.characters.first!] ?? UIColor.black
+        
+        textLabel.addAttribute(NSForegroundColorAttributeName, value:color, range:textToHighlight.nsrange)
+        tweetTextLabel.attributedText = textLabel
+    }
+    
+    private var highlight: Dictionary<Character, UIColor> = [
+        "@" :   UIColor.orange, // Mention
+        "#" :   UIColor.blue, // Hashtag
+        "h" :   UIColor.brown // URL
+    ]
+    
     private func updateUI() {
         
-        // reset any existing tweet information
         tweetTextLabel?.attributedText = nil
         tweetScreenNameLabel?.text = nil
         tweetProfileImageView?.image = nil
         tweetCreatedLabel?.text = nil
         
-        // load more information from our tweet (if any)
         if let tweet = self.tweet {
             tweetTextLabel?.text = tweet.text
             if tweetTextLabel?.text != nil {
+                var highlightText =  NSMutableAttributedString(string:tweetTextLabel.text!)
+                
                 for _ in tweet.media {
                     tweetTextLabel.text! += " 📷"
                 }
-                var attrsString =  NSMutableAttributedString(string:tweetTextLabel.text!);
                 for mention in tweet.userMentions {
-                    let color = UIColor.red;
-                    let textToFind = mention.keyword
-                    
-//                    let attrsString =  NSMutableAttributedString(string:tweetTextLabel.text!);
-                    
-                    // search for word occurrence
-                    let range = (tweetTextLabel.text! as NSString).range(of: textToFind)
-                    if (range.length > 0) {
-                        attrsString.addAttribute(NSForegroundColorAttributeName,value:color,range:range)
-                    }
-                    
-                    // set attributed text
-                    tweetTextLabel.attributedText = attrsString
+                    highlightTweetTextLabel(textLabel: highlightText, textToHighlight: mention)
+                }
+                for hashtag in tweet.hashtags {
+                    highlightTweetTextLabel(textLabel: highlightText, textToHighlight: hashtag)
+                }
+                for url in tweet.urls {
+                    highlightTweetTextLabel(textLabel: highlightText, textToHighlight: url)
                 }
             }
         }
