@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Wum-Ve-d9f">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Wum-Ve-d9f">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -88,6 +88,7 @@
                                     <outlet property="tweetProfileImageView" destination="sak-2R-SnN" id="Gjz-JK-km1"/>
                                     <outlet property="tweetScreenNameLabel" destination="O89-WS-VXm" id="EJ1-e6-Jd9"/>
                                     <outlet property="tweetTextLabel" destination="W8f-0C-Jpe" id="KcL-Jk-p4d"/>
+                                    <segue destination="EJ6-21-bWK" kind="show" identifier="Show Detail" id="4Bg-qr-UwK"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -104,6 +105,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLR-dX-MVH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1016.8" y="82.3088455772114"/>
+        </scene>
+        <!--Tweet Detail Table View Controller-->
+        <scene sceneID="i5G-WF-und">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n07-ro-yKq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="EJ6-21-bWK" customClass="TweetDetailTableViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController"/>
+            </objects>
+            <point key="canvasLocation" x="1825" y="82"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8ML-Jc-Zd6">
