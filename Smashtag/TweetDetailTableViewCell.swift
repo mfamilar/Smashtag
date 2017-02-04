@@ -11,14 +11,22 @@ import Twitter
 
 class TweetDetailTableViewCell: UITableViewCell {
 
-    var detail: String? {
+    var detail: AnyObject? {
         didSet {
             updateUI()
         }
     }
     
     private func updateUI() {
-        self.textLabel?.text = self.detail
+        switch detail {
+        case is UIImage:
+            self.imageView?.image = self.detail as! UIImage!
+
+        case is String:
+            self.textLabel?.text = self.detail as! String?
+        default:
+            break
+        }
     }
     
     override func awakeFromNib() {

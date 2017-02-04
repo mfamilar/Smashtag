@@ -26,7 +26,7 @@ class TweetTableViewCell: UITableViewCell {
         let color = highlight[textToHighlight.keyword.characters.first!] ?? UIColor.black
         
         textLabel.addAttribute(NSForegroundColorAttributeName, value:color, range:textToHighlight.nsrange)
-        tweetTextLabel.attributedText = textLabel
+        tweetTextLabel?.attributedText = textLabel
     }
     
     private var highlight: Dictionary<Character, UIColor> = [
@@ -44,11 +44,12 @@ class TweetTableViewCell: UITableViewCell {
         
         if let tweet = self.tweet {
             tweetTextLabel?.text = tweet.text
-            if tweetTextLabel?.text != nil {
-                var highlightText =  NSMutableAttributedString(string:tweetTextLabel.text!)
+            if let textLabel = tweetTextLabel?.text {
+                var highlightText =  NSMutableAttributedString(string: textLabel)
                 
                 for _ in tweet.media {
-                    tweetTextLabel.text! += " 📷"
+                    let picEmoji = NSMutableAttributedString(string: " 📷")
+                    highlightText.append(picEmoji)
                 }
                 for mention in tweet.userMentions {
                     highlightTweetTextLabel(textLabel: highlightText, textToHighlight: mention)

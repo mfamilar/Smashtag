@@ -13,17 +13,25 @@ class TweetDetailTableViewController: UITableViewController {
     
     private let sections = ["Images", "Hashtags", "Users", "URLs"]
     
-    private var details = [[String]]()
+    private var details = [[AnyObject]]()
+    
+    private var imageURL: NSURL? {
+        didSet {
+            fetchImage()
+        }
+    }
+    
+    private var picture: UIImage?
     
     var tweet: Twitter.Tweet? {
         didSet {
             if let tweet = self.tweet {
                 let data = getData(tweet: tweet)
                 
-                details.append([])
                 details.append(data.0)
                 details.append(data.1)
                 details.append(data.2)
+                details.append(data.3)
             }
         }
     }
@@ -32,21 +40,47 @@ class TweetDetailTableViewController: UITableViewController {
         static let Detail = "Detail"
     }
     
-    private func getData(tweet: Twitter.Tweet) -> ([String], [String], [String]) {
-        var mentions = [String]()
-        var hashtags = [String]()
-        var urls = [String]()
+    private func fetchImage() {
+        if let url = imageURL {
+            DispatchQueue.global(qos: .userInteractive).async {
+                let contentsOfURL = NSData(contentsOf: url as URL)
+                DispatchQueue.main.async { [weak weakSelf = self] in
+                    if url == weakSelf?.imageURL {
+                        if let imageData = contentsOfURL {
+                            if let image = UIImage(data: imageData as Data) {
+                                weakSelf?.picture = image
+                            }
+                        }
+                    } else {
+                        print("ignored data returned from url \(url)")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func getData(tweet: Twitter.Tweet) -> ([AnyObject], [AnyObject], [AnyObject], [AnyObject]) {
+        var mentions = [AnyObject]()
+        var hashtags = [AnyObject]()
+        var urls = [AnyObject]()
+        var images = [AnyObject]()
         
+        for image in (tweet.media) {
+            imageURL = image.url
+            if let photo = self.picture {
+                images.append(photo as AnyObject)
+            }
+        }
         for hashtag in (tweet.hashtags) {
-            hashtags.append(hashtag.keyword)
+            hashtags.append(hashtag.keyword as AnyObject)
         }
         for mention in (tweet.userMentions) {
-            mentions.append(mention.keyword)
+            mentions.append(mention.keyword as AnyObject)
         }
         for url in (tweet.urls) {
-            urls.append(url.keyword)
+            urls.append(url.keyword as AnyObject)
         }
-        return (hashtags, mentions, urls)
+        return (images, hashtags, mentions, urls)
     }
     
     override func viewDidLoad() {
