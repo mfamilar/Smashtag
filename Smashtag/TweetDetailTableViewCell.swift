@@ -18,10 +18,12 @@ class TweetDetailTableViewCell: UITableViewCell {
     }
     
     private func updateUI() {
+        self.textLabel?.text = nil
+        self.imageView?.image = nil
+
         switch detail {
         case is UIImage:
             self.imageView?.image = self.detail as! UIImage!
-
         case is String:
             self.textLabel?.text = self.detail as! String?
         default:
