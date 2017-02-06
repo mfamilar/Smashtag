@@ -9,25 +9,20 @@
 import UIKit
 import Twitter
 
-class TweetDetailTableViewCell: UITableViewCell {
+class TweetDetailTableViewCell: UITableViewCell, UITableViewDelegate {
+    
+    @IBOutlet weak var tweetImage: UIImageView!
 
-    var detail: AnyObject? {
+    var detail: String? {
         didSet {
-            updateUI()
+            self.textLabel?.text = nil
+            self.textLabel?.text = self.detail
         }
     }
     
-    private func updateUI() {
-        self.textLabel?.text = nil
-        self.imageView?.image = nil
-
-        switch detail {
-        case is UIImage:
-            self.imageView?.image = self.detail as! UIImage!
-        case is String:
-            self.textLabel?.text = self.detail as! String?
-        default:
-            break
+    var pic: UIImage? {
+        didSet {
+            self.tweetImage?.image = pic
         }
     }
     

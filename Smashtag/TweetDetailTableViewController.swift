@@ -13,7 +13,9 @@ class TweetDetailTableViewController: UITableViewController {
     
     private var sections: [String] = []
     
-    private var details = [[AnyObject]]()
+    private var details = [[String]]()
+    
+    private var image: UIImage?
     
     private var imageURL: NSURL? {
         didSet {
@@ -25,7 +27,6 @@ class TweetDetailTableViewController: UITableViewController {
         didSet {
             if let tweet = self.tweet {
                 let data = getData(tweet: tweet)
-                details.append([])
                 details.append(data.0)
                 details.append(data.1)
                 details.append(data.2)
@@ -34,7 +35,8 @@ class TweetDetailTableViewController: UITableViewController {
     }
     
     private struct Storyboard {
-        static let Detail = "Detail"
+        static let Highlights = "Highlights"
+        static let Image = "Image"
     }
     
     private func fetchImage() {
@@ -45,7 +47,7 @@ class TweetDetailTableViewController: UITableViewController {
                     if url == weakSelf?.imageURL {
                         if let imageData = contentsOfURL {
                             if let image = UIImage(data: imageData as Data) {
-                                weakSelf?.details[0].append(image as AnyObject)
+                                weakSelf?.image = image
                                 weakSelf?.tableView.reloadData()
                             }
                         }
@@ -57,30 +59,35 @@ class TweetDetailTableViewController: UITableViewController {
         }
     }
     
-    private func getData(tweet: Twitter.Tweet) -> ([AnyObject], [AnyObject], [AnyObject]) {
-        var mentions = [AnyObject]()
-        var hashtags = [AnyObject]()
-        var urls = [AnyObject]()
+    private func getData(tweet: Twitter.Tweet) -> ([String], [String], [String]) {
+        var mentions = [String]()
+        var hashtags = [String]()
+        var urls = [String]()
         
         for image in (tweet.media) {
             imageURL = image.url
         }
         for hashtag in (tweet.hashtags) {
-            hashtags.append(hashtag.keyword as AnyObject)
+            hashtags.append(hashtag.keyword)
         }
         for mention in (tweet.userMentions) {
-            mentions.append(mention.keyword as AnyObject)
+            mentions.append(mention.keyword)
         }
         for url in (tweet.urls) {
-            urls.append(url.keyword as AnyObject)
+            urls.append(url.keyword)
         }
         return (hashtags, mentions, urls)
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50.0
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        sections = ["Images", "Hashtags", "Users", "URLs"]
+        sections = ["Hashtags", "Users", "URLs"]
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -96,14 +103,21 @@ class TweetDetailTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Detail, for: indexPath)
+        let highlightsCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Highlights, for: indexPath)
+//        let imageCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Image, for: indexPath)
 
-        let detail = self.details[indexPath.section][indexPath.row]
-        if let tweetDetail = cell as? TweetDetailTableViewCell {
-            tweetDetail.detail = detail
+        let highlights = self.details[indexPath.section][indexPath.row]
+        if let tweetDetail = highlightsCell as? TweetDetailTableViewCell {
+            tweetDetail.detail = highlights
         }
-
-        return cell
+        
+//        if let image = self.image {
+//            if let tweetDetail = imageCell as? TweetDetailTableViewCell {
+//                tweetDetail.pic = image
+//            }
+//        }
+        
+        return highlightsCell
     }
 
     /*
