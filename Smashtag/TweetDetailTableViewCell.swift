@@ -9,12 +9,25 @@
 import UIKit
 import Twitter
 
-class TweetHighlightsTableViewCell: UITableViewCell {
+class TweetDetailTableViewCell: UITableViewCell {
 
-    var detail: String? {
+    var detail: AnyObject? {
         didSet {
-            self.textLabel?.text = nil
-            self.textLabel?.text = self.detail
+            updateUI()
+        }
+    }
+    
+    private func updateUI() {
+        self.textLabel?.text = nil
+        self.imageView?.image = nil
+        
+        switch detail {
+        case is UIImage:
+            self.imageView?.image = self.detail as! UIImage!
+        case is String:
+            self.textLabel?.text = self.detail as! String?
+        default:
+            break
         }
     }
     
