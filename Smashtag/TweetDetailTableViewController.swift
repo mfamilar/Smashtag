@@ -111,14 +111,42 @@ class TweetDetailTableViewController: UITableViewController {
         return cell
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        if let firstChar =  cell?.textLabel?.text?.characters.first {
+            if let constant = dataType[firstChar] {
+                switch constant {
+                case .User:
+                    print("User")
+                case .Hashtag:
+                    print("HASH")
+                default:
+                    print("URL")
+                }
+            }
+        } else {
+            print("PHOTO")
+        }
+    }
+    
+    enum DataType {
+        case Image
+        case Hashtag
+        case User
+        case URL
+    }
+    
+    private var dataType: Dictionary<Character, DataType> = [
+        "@" :   .User,
+        "#" :   .Hashtag,
+        "h" :   .URL,
+    ]
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
     }
-    */
 
 }
