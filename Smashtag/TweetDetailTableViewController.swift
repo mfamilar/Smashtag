@@ -25,18 +25,12 @@ class TweetDetailTableViewController: UITableViewController {
     
     var tweet: Twitter.Tweet? {
         didSet {
-            if let tweet = self.tweet {
-                let data = getData(tweet: tweet)
-                details.append(data.0)
-                details.append(data.1)
-                details.append(data.2)
-            }
+                getData()
         }
     }
     
     private struct Storyboard {
         static let Highlights = "Highlights"
-        static let Image = "Image"
     }
     
     private func fetchImage() {
@@ -59,24 +53,24 @@ class TweetDetailTableViewController: UITableViewController {
         }
     }
     
-    private func getData(tweet: Twitter.Tweet) -> ([String], [String], [String]) {
-        var mentions = [String]()
-        var hashtags = [String]()
-        var urls = [String]()
+    private func createTableViewSections(tweet: [Twitter.Tweet.IndexedKeyword], section: String) {
+        var array = [String]()
         
-        for image in (tweet.media) {
-            imageURL = image.url
+        for element in tweet {
+                array.append(element.keyword)
         }
-        for hashtag in (tweet.hashtags) {
-            hashtags.append(hashtag.keyword)
+        if !array.isEmpty {
+            sections.append(section)
+             details.append(array)
         }
-        for mention in (tweet.userMentions) {
-            mentions.append(mention.keyword)
+    }
+    
+    private func getData() {
+        if let tweet = self.tweet {
+            createTableViewSections(tweet: tweet.hashtags, section: "Hashtags")
+            createTableViewSections(tweet: tweet.userMentions, section: "Users")
+            createTableViewSections(tweet: tweet.urls, section: "URLs")
         }
-        for url in (tweet.urls) {
-            urls.append(url.keyword)
-        }
-        return (hashtags, mentions, urls)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -86,8 +80,6 @@ class TweetDetailTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        sections = ["Hashtags", "Users", "URLs"]
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -104,18 +96,11 @@ class TweetDetailTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let highlightsCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Highlights, for: indexPath)
-//        let imageCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Image, for: indexPath)
-
+        
         let highlights = self.details[indexPath.section][indexPath.row]
-        if let tweetDetail = highlightsCell as? TweetDetailTableViewCell {
+        if let tweetDetail = highlightsCell as? TweetHighlightsTableViewCell {
             tweetDetail.detail = highlights
         }
-        
-//        if let image = self.image {
-//            if let tweetDetail = imageCell as? TweetDetailTableViewCell {
-//                tweetDetail.pic = image
-//            }
-//        }
         
         return highlightsCell
     }

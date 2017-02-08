@@ -22,14 +22,16 @@ class TweetTableViewCell: UITableViewCell {
         }
     }
     
-    private func highlightTweetTextLabel(textLabel: NSMutableAttributedString, textToHighlight: Tweet.IndexedKeyword) {
-        let color = highlight[textToHighlight.keyword.characters.first!] ?? UIColor.black
-        
-        textLabel.addAttribute(NSForegroundColorAttributeName, value:color, range:textToHighlight.nsrange)
-        tweetTextLabel?.attributedText = textLabel
+    private func highlightTweetTextLabel(textLabel: NSMutableAttributedString, textToHighlight: [Tweet.IndexedKeyword]) {
+        for highlight in textToHighlight {
+            let color = colors[highlight.keyword.characters.first!] ?? UIColor.black
+            textLabel.addAttribute(NSForegroundColorAttributeName, value:color, range:highlight.nsrange)
+            tweetTextLabel?.attributedText = textLabel
+    
+        }
     }
     
-    private var highlight: Dictionary<Character, UIColor> = [
+    private var colors: Dictionary<Character, UIColor> = [
         "@" :   UIColor.orange, // Mention
         "#" :   UIColor.blue, // Hashtag
         "h" :   UIColor.brown // URL
@@ -48,21 +50,15 @@ class TweetTableViewCell: UITableViewCell {
                 var highlightText =  NSMutableAttributedString(string: textLabel)
                 
                 for _ in tweet.media {
-                    let picEmoji = NSMutableAttributedString(string: " 📷")
-                    highlightText.append(picEmoji)
+                    highlightText.append(NSMutableAttributedString(string: " 📷"))
+                    tweetTextLabel?.attributedText = highlightText
                 }
-                for mention in tweet.userMentions {
-                    highlightTweetTextLabel(textLabel: highlightText, textToHighlight: mention)
-                }
-                for hashtag in tweet.hashtags {
-                    highlightTweetTextLabel(textLabel: highlightText, textToHighlight: hashtag)
-                }
-                for url in tweet.urls {
-                    highlightTweetTextLabel(textLabel: highlightText, textToHighlight: url)
-                }
+                highlightTweetTextLabel(textLabel: highlightText, textToHighlight: tweet.userMentions)
+                highlightTweetTextLabel(textLabel: highlightText, textToHighlight: tweet.hashtags)
+                highlightTweetTextLabel(textLabel: highlightText, textToHighlight: tweet.urls)
             }
         }
-    
+        
 
         var tweetUserName: String {
             return tweet?.user.description ?? ""

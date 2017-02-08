@@ -9,20 +9,12 @@
 import UIKit
 import Twitter
 
-class TweetDetailTableViewCell: UITableViewCell, UITableViewDelegate {
-    
-    @IBOutlet weak var tweetImage: UIImageView!
+class TweetHighlightsTableViewCell: UITableViewCell {
 
     var detail: String? {
         didSet {
             self.textLabel?.text = nil
             self.textLabel?.text = self.detail
-        }
-    }
-    
-    var pic: UIImage? {
-        didSet {
-            self.tweetImage?.image = pic
         }
     }
     
