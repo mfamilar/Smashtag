@@ -11,6 +11,8 @@ import Twitter
 
 class TweetDetailTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var photo: UIImageView!
+    
     var detail: AnyObject? {
         didSet {
             updateUI()
@@ -23,7 +25,7 @@ class TweetDetailTableViewCell: UITableViewCell {
         
         switch detail {
         case is UIImage:
-            self.imageView?.image = self.detail as! UIImage!
+            self.photo?.image = self.detail as! UIImage!
         case is String:
             self.textLabel?.text = self.detail as! String?
         default:

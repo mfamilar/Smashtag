@@ -110,18 +110,32 @@
         <scene sceneID="i5G-WF-und">
             <objects>
                 <tableViewController id="EJ6-21-bWK" customClass="TweetDetailTableViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="59" sectionHeaderHeight="28" sectionFooterHeight="28" id="q4R-fL-PJg">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="351" sectionHeaderHeight="28" sectionFooterHeight="28" id="q4R-fL-PJg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Details" rowHeight="217" id="rdx-WR-SCG" customClass="TweetDetailTableViewCell" customModule="Smashtag" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="217"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Details" rowHeight="351" id="rdx-WR-SCG" customClass="TweetDetailTableViewCell" customModule="Smashtag" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="351"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rdx-WR-SCG" id="bCF-Uy-hS0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zIj-lG-oM4">
+                                            <rect key="frame" x="8" y="8" width="359" height="335"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="top" secondItem="bCF-Uy-hS0" secondAttribute="topMargin" id="HNN-jt-jJl"/>
+                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="trailing" secondItem="bCF-Uy-hS0" secondAttribute="trailingMargin" id="l83-Rv-iyr"/>
+                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="centerY" secondItem="bCF-Uy-hS0" secondAttribute="centerY" id="xQJ-gG-Wk4"/>
+                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="leading" secondItem="bCF-Uy-hS0" secondAttribute="leadingMargin" id="ywa-UV-psF"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="photo" destination="zIj-lG-oM4" id="fgQ-XD-u7U"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

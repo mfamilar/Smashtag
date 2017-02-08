@@ -15,17 +15,12 @@ class TweetDetailTableViewController: UITableViewController {
     
     private var details = [[AnyObject]]()
     
-    private var image: UIImage?
-    
-    private var imageURL: NSURL? {
-        didSet {
-            fetchImage()
-        }
-    }
-    
+    private var tweetImage: MediaItem?
+
     var tweet: Twitter.Tweet? {
         didSet {
-                getData()
+            getData()
+            title = tweet?.user.name
         }
     }
     
@@ -34,11 +29,11 @@ class TweetDetailTableViewController: UITableViewController {
     }
     
     private func fetchImage() {
-        if let url = imageURL {
+        if let url = tweetImage?.url {
             DispatchQueue.global(qos: .userInteractive).async {
                 let contentsOfURL = NSData(contentsOf: url as URL)
                 DispatchQueue.main.async { [weak weakSelf = self] in
-                    if url == weakSelf?.imageURL {
+                    if url == weakSelf?.tweetImage?.url {
                         if let imageData = contentsOfURL {
                             if let image = UIImage(data: imageData as Data) {
                                 weakSelf?.details[0].append(image as AnyObject)
@@ -68,9 +63,10 @@ class TweetDetailTableViewController: UITableViewController {
     private func getData() {
         if let tweet = self.tweet {
             for image in tweet.media {
+                tweetImage = image
                 sections.append("Images")
                 details.append([])
-                imageURL = image.url
+                fetchImage()
             }
             createTableViewSections(tweet: tweet.hashtags, section: "Hashtags")
             createTableViewSections(tweet: tweet.userMentions, section: "Users")
@@ -79,9 +75,13 @@ class TweetDetailTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50.0
+        if indexPath.section == 0 {
+            if let ratio = tweetImage?.aspectRatio {
+                return CGFloat(ratio) * tableView.bounds.size.width
+            }
+        }
+        return UITableViewAutomaticDimension
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,14 +100,15 @@ class TweetDetailTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let highlightsCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Details, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Details, for: indexPath)
         
-        let highlights = self.details[indexPath.section][indexPath.row]
-        if let tweetDetail = highlightsCell as? TweetDetailTableViewCell {
-            tweetDetail.detail = highlights
+        let details = self.details[indexPath.section][indexPath.row]
+        
+        if let tweetDetail = cell as? TweetDetailTableViewCell {
+            tweetDetail.detail = details
         }
         
-        return highlightsCell
+        return cell
     }
 
     /*
