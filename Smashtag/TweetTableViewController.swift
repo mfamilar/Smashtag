@@ -53,6 +53,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
+        self.navigationItem.hidesBackButton = true
     }
 
     // MARK: - UITableViewDataSource
@@ -95,10 +96,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var destinationvc = segue.destination
-        if let navcon = destinationvc as? UINavigationController {
-            destinationvc = navcon.visibleViewController ?? destinationvc
-        }
+        let destinationvc = segue.destination.contentViewController
+
         if let tdtvc = destinationvc as? TweetDetailTableViewController {
             if segue.identifier == Storyboard.ShowTweetSegue {
                 if (sender as? UITableViewCell) != nil {
@@ -109,4 +108,16 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
+}
+
+extension UIViewController {
+    var contentViewController: UIViewController {
+        get {
+            if let navcon = self as? UINavigationController {
+                return navcon.visibleViewController ?? self
+            } else {
+                return self
+            }
+        }
+    }
 }

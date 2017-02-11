@@ -110,6 +110,7 @@ class TweetDetailTableViewController: UITableViewController {
         
         return cell
     }
+    
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
@@ -117,12 +118,11 @@ class TweetDetailTableViewController: UITableViewController {
         if let firstChar =  cell?.textLabel?.text?.characters.first {
             if let constant = dataType[firstChar] {
                 switch constant {
-                case .User:
-                    print("User")
-                case .Hashtag:
-                    print("HASH")
+                case .User, .Hashtag:
+                    performSegue(withIdentifier: "new search text", sender: cell?.textLabel?.text)
                 default:
-                    print("URL")
+                    //Check if we can open URL
+                    UIApplication.shared.open(URL(string: (cell?.textLabel?.text)!)!, options: [:], completionHandler: nil)
                 }
             }
         } else {
@@ -143,10 +143,26 @@ class TweetDetailTableViewController: UITableViewController {
         "h" :   .URL,
     ]
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
+    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
+        if let cell = sender as? TweetDetailTableViewCell {
+            if cell.textLabel?.text?.characters.first == "h" {
+                //Reset the UI ?
+                return false
+            }
+        }
+        return true
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationvc = segue.destination.contentViewController
 
+        if segue.identifier == "new search text" {
+            if let ttvc = destinationvc as? TweetTableViewController {
+                if let newSearchText = sender as? String {
+                    ttvc.searchText = newSearchText
+                }
+            }
+        }
+    }
+    
 }
