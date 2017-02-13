@@ -10,6 +10,19 @@ import UIKit
 import Twitter
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
+    
+    var recents: [String] {
+        get {
+            return UserDefaults.standard.object(forKey: "recents") as? [String] ?? []
+        }
+        set {
+            var mostRecents = newValue
+            if newValue.count > 10 {
+                mostRecents.removeFirst()
+            }
+            UserDefaults.standard.set(mostRecents, forKey: "recents")
+        }
+    }
 
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
@@ -19,6 +32,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     
     var searchText: String? {
         didSet {
+            if searchText != nil {
+                recents.append(searchText!)
+            }
             tweets.removeAll()
             searchForTweets()
             title = searchText
@@ -54,7 +70,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.delegate = self
-//        self.navigationItem.hidesBackButton = true
+        //        self.navigationItem.hidesBackButton = true
     }
 
     // MARK: - UITableViewDataSource
