@@ -11,6 +11,7 @@ import Twitter
 
 class TweetDetailTableViewController: UITableViewController {
     
+    
     private var sections: [String] = []
     
     private var details = [[AnyObject]]()
@@ -26,6 +27,8 @@ class TweetDetailTableViewController: UITableViewController {
     
     private struct Storyboard {
         static let Details = "Details"
+        static let NewSearchText = "New Search Text"
+        static let ShowImage = "Show Image"
     }
     
     private func fetchImage() {
@@ -77,7 +80,7 @@ class TweetDetailTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if let ratio = tweetImage?.aspectRatio {
-                return CGFloat(ratio) * tableView.bounds.size.width
+                return (CGFloat(ratio) * tableView.bounds.size.width) / CGFloat(ratio)
             }
         }
         return UITableViewAutomaticDimension
@@ -119,14 +122,13 @@ class TweetDetailTableViewController: UITableViewController {
             if let constant = dataType[firstChar] {
                 switch constant {
                 case .User, .Hashtag:
-                    performSegue(withIdentifier: "new search text", sender: cell?.textLabel?.text)
+                    performSegue(withIdentifier: Storyboard.NewSearchText, sender: cell?.textLabel?.text)
                 default:
-                    //Check if we can open URL
                     UIApplication.shared.open(URL(string: (cell?.textLabel?.text)!)!, options: [:], completionHandler: nil)
                 }
             }
         } else {
-            print("PHOTO")
+            performSegue(withIdentifier: Storyboard.ShowImage, sender: self.details[indexPath.section][indexPath.row])
         }
     }
     
@@ -142,11 +144,10 @@ class TweetDetailTableViewController: UITableViewController {
         "#" :   .Hashtag,
         "h" :   .URL,
     ]
-    
+
     override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
         if let cell = sender as? TweetDetailTableViewCell {
             if cell.textLabel?.text?.characters.first == "h" {
-                //Reset the UI ?
                 return false
             }
         }
@@ -156,13 +157,21 @@ class TweetDetailTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
 
-        if segue.identifier == "new search text" {
+        if segue.identifier == Storyboard.NewSearchText {
             if let ttvc = destinationvc as? TweetTableViewController {
                 if let newSearchText = sender as? String {
                     ttvc.searchText = newSearchText
                 }
             }
         }
+        else if segue.identifier == Storyboard.ShowImage {
+            if let ivc = destinationvc as? ImageViewController {
+                if let image = sender as? UIImage {
+                    ivc.image = image
+                }
+            }
+        }
+
     }
     
 }

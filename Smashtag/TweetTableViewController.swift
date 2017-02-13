@@ -9,7 +9,7 @@
 import UIKit
 import Twitter
 
-class TweetTableViewController: UITableViewController, UITextFieldDelegate {
+class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
 
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
@@ -53,7 +53,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        self.navigationItem.hidesBackButton = true
+        self.tabBarController?.delegate = self
+//        self.navigationItem.hidesBackButton = true
     }
 
     // MARK: - UITableViewDataSource
@@ -68,7 +69,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
 
     private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
-        static let ShowTweetSegue = "Show Detail"
+        static let ShowTweetSegue = "Show Details"
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -107,7 +108,14 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
     }
-    
+   
+     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex == 0 {
+            searchText = nil
+            searchTextField.text = ""
+            
+        }
+    }
 }
 
 extension UIViewController {
