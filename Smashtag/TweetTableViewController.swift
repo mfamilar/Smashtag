@@ -70,7 +70,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.delegate = self
-        //        self.navigationItem.hidesBackButton = true
+//                self.navigationItem.hidesBackButton = true
     }
 
     // MARK: - UITableViewDataSource
@@ -86,6 +86,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
         static let ShowTweetSegue = "Show Details"
+        static let SearchTabBarIdentifier = 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -126,7 +127,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     }
    
      func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if tabBarController.selectedIndex == 0 {
+        if tabBarController.selectedIndex == Storyboard.SearchTabBarIdentifier {
             searchText = nil
             searchTextField.text = ""
             

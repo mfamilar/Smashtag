@@ -15,7 +15,7 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
     private var ttvc = TweetTableViewController()
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if tabBarController.selectedIndex == 1 {
+        if tabBarController.selectedIndex == Storyboard.RecentsTabBarIdentifier {
             data = ttvc.recents
             self.tableView.reloadData()
         }
@@ -24,11 +24,8 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         data = ttvc.recents
+        title = Storyboard.HistoryCellIdentifier
         self.tabBarController?.delegate = self
-    }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -36,22 +33,26 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Recents", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.HistoryCellIdentifier, for: indexPath)
         
         cell.textLabel?.text = data[indexPath.row]
 
         return cell
     }
-
+    
+    private struct Storyboard {
+        static let MostRecentsTweetsCellIdentifier = "Most Recents Tweets"
+        static let HistoryCellIdentifier = "History"
+        static let RecentsTabBarIdentifier = 1
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
         
-        if destinationvc is TweetTableViewController {
-            if segue.identifier == "Recents Search" {
-                print("SENDER = \(sender)")
+        if let mrttvc = destinationvc as? MostRecentsTweetsTableViewController {
+            if segue.identifier == Storyboard.MostRecentsTweetsCellIdentifier {
                  if let cell = sender as? UITableViewCell {
-                    print("       RECENT                 =\(cell.textLabel?.text)"              )
-                    ttvc.searchText = cell.textLabel!.text
+                    mrttvc.SearchText = cell.textLabel?.text
                 }
             }
         }
