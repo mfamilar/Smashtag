@@ -10,32 +10,37 @@ import UIKit
 
 class RecentsTableViewController: UITableViewController, UITabBarControllerDelegate {
     
-    private var data = [String]()
+    private var userHistory = [String]() {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     
     private var ttvc = TweetTableViewController()
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if tabBarController.selectedIndex == Storyboard.RecentsTabBarIdentifier {
-            data = ttvc.recents
-            self.tableView.reloadData()
+            userHistory = ttvc.recentsSearch
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        data = ttvc.recents
+        userHistory = ttvc.recentsSearch
         title = Storyboard.HistoryCellIdentifier
         self.tabBarController?.delegate = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return userHistory.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.HistoryCellIdentifier, for: indexPath)
         
-        cell.textLabel?.text = data[indexPath.row]
+        cell.textLabel?.text = userHistory[indexPath.row]
 
         return cell
     }
@@ -52,7 +57,7 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
         if let mrttvc = destinationvc as? MostRecentsTweetsTableViewController {
             if segue.identifier == Storyboard.MostRecentsTweetsCellIdentifier {
                  if let cell = sender as? UITableViewCell {
-                    mrttvc.SearchText = cell.textLabel?.text
+                    mrttvc.searchText = cell.textLabel?.text
                 }
             }
         }

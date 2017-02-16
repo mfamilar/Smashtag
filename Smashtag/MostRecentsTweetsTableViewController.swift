@@ -18,16 +18,16 @@ class MostRecentsTweetsTableViewController: UITableViewController {
         }
     }
 
-    var SearchText: String? {
+    var searchText: String? {
         didSet {
             tweets.removeAll()
             searchForTweets()
-            title = SearchText
+            title = searchText
         }
     }
     
     private var twitterRequest: TwitterRequest? {
-        if let query = SearchText, !query.isEmpty {
+        if let query = searchText, !query.isEmpty {
             return TwitterRequest(search: query + " -filter:retweets", count: 15)
         }
         return nil
@@ -57,7 +57,7 @@ class MostRecentsTweetsTableViewController: UITableViewController {
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets.count
     }
@@ -71,6 +71,7 @@ class MostRecentsTweetsTableViewController: UITableViewController {
         let tweet = tweets[indexPath.row]
         
         cell.textLabel?.text = tweet.text
+        cell.detailTextLabel?.text = tweet.user.name
         
         return cell
     }

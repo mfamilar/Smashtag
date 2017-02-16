@@ -11,16 +11,21 @@ import Twitter
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
     
-    var recents: [String] {
+    private struct UserDefaultsSettings {
+        static let Key = "Recents"
+        static let MaxSizeHistory = 100
+    }
+    
+    var recentsSearch: [String] {
         get {
-            return UserDefaults.standard.object(forKey: "recents") as? [String] ?? []
+            return UserDefaults.standard.object(forKey: UserDefaultsSettings.Key) as? [String] ?? []
         }
         set {
             var mostRecents = newValue
-            if newValue.count > 10 {
+            if newValue.count > UserDefaultsSettings.MaxSizeHistory {
                 mostRecents.removeFirst()
             }
-            UserDefaults.standard.set(mostRecents, forKey: "recents")
+            UserDefaults.standard.set(mostRecents, forKey: UserDefaultsSettings.Key)
         }
     }
 
@@ -32,8 +37,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     
     var searchText: String? {
         didSet {
-            if searchText != nil {
-                recents.append(searchText!)
+            if let textToSave = searchText {
+                recentsSearch.append(textToSave)
             }
             tweets.removeAll()
             searchForTweets()
@@ -64,13 +69,20 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
             }
         }
     }
+
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex == Storyboard.SearchTabBarIdentifier {
+            searchText = nil
+            searchTextField.text = ""
+            
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.delegate = self
-//                self.navigationItem.hidesBackButton = true
     }
 
     // MARK: - UITableViewDataSource
@@ -91,8 +103,8 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.TweetCellIdentifier, for: indexPath)
-
         let tweet = tweets[indexPath.section][indexPath.row]
+        
         if let tweetCell = cell as? TweetTableViewCell {
             tweetCell.tweet = tweet
         }
@@ -119,18 +131,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         if let tdtvc = destinationvc as? TweetDetailTableViewController {
             if segue.identifier == Storyboard.ShowTweetSegue {
                 if (sender as? UITableViewCell) != nil {
-                    let indexPath = self.tableView.indexPathForSelectedRow! as NSIndexPath
-                    tdtvc.tweet = tweets[indexPath.section][indexPath.row]
+                    if let indexPath = self.tableView.indexPathForSelectedRow {
+                        tdtvc.tweet = tweets[indexPath.section][indexPath.row]
+                    }
                 }
             }
-        }
-    }
-   
-     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if tabBarController.selectedIndex == Storyboard.SearchTabBarIdentifier {
-            searchText = nil
-            searchTextField.text = ""
-            
         }
     }
 }

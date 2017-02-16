@@ -14,7 +14,11 @@ class TweetDetailTableViewController: UITableViewController {
     
     private var sections: [String] = []
     
-    private var details = [[AnyObject]]()
+    private var details = [[AnyObject]]() {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     
     private var tweetImage: MediaItem?
 
@@ -40,7 +44,6 @@ class TweetDetailTableViewController: UITableViewController {
                         if let imageData = contentsOfURL {
                             if let image = UIImage(data: imageData as Data) {
                                 weakSelf?.details[0].append(image as AnyObject)
-                                weakSelf?.tableView.reloadData()
                             }
                         }
                     } else {
@@ -59,7 +62,7 @@ class TweetDetailTableViewController: UITableViewController {
         }
         if !array.isEmpty {
             sections.append(section)
-             details.append(array)
+            details.append(array)
         }
     }
     
@@ -77,6 +80,18 @@ class TweetDetailTableViewController: UITableViewController {
         }
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval)
+    {
+        self.tableView.reloadData()
+    }
+    
+    
+    // MARK: - UITableViewDataSource
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if let ratio = tweetImage?.aspectRatio {
@@ -84,10 +99,6 @@ class TweetDetailTableViewController: UITableViewController {
             }
         }
         return UITableViewAutomaticDimension
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -104,7 +115,6 @@ class TweetDetailTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Details, for: indexPath)
-        
         let details = self.details[indexPath.section][indexPath.row]
         
         if let tweetDetail = cell as? TweetDetailTableViewCell {
