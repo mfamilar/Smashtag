@@ -21,7 +21,7 @@ class TweetDetailTableViewController: UITableViewController {
     }
     
     private var tweetImage: MediaItem?
-
+    
     var tweet: Twitter.Tweet? {
         didSet {
             getData()
@@ -58,7 +58,7 @@ class TweetDetailTableViewController: UITableViewController {
         var array = [AnyObject]()
         
         for element in tweet {
-                array.append(element.keyword as AnyObject)
+            array.append(element.keyword as AnyObject)
         }
         if !array.isEmpty {
             sections.append(section)
@@ -95,12 +95,12 @@ class TweetDetailTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             if let ratio = tweetImage?.aspectRatio {
-                return (CGFloat(ratio) * tableView.bounds.size.width) / CGFloat(ratio)
+                return (tableView.bounds.size.width / CGFloat(ratio))
             }
         }
         return UITableViewAutomaticDimension
     }
-
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section]
     }
@@ -108,7 +108,7 @@ class TweetDetailTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return details[section].count
     }
@@ -124,7 +124,7 @@ class TweetDetailTableViewController: UITableViewController {
         return cell
     }
     
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         
@@ -153,20 +153,15 @@ class TweetDetailTableViewController: UITableViewController {
         "@" :   .User,
         "#" :   .Hashtag,
         "h" :   .URL,
-    ]
-
+        ]
+    
     override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
-        if let cell = sender as? TweetDetailTableViewCell {
-            if cell.textLabel?.text?.characters.first == "h" {
-                return false
-            }
-        }
-        return true
+        return false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
-
+        
         if segue.identifier == Storyboard.NewSearchText {
             if let ttvc = destinationvc as? TweetTableViewController {
                 if let newSearchText = sender as? String {
@@ -181,7 +176,7 @@ class TweetDetailTableViewController: UITableViewController {
                 }
             }
         }
-
+        
     }
     
 }

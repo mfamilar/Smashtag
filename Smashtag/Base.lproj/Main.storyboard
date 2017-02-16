@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="58" width="375" height="128"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Ks-ay-57i" id="iI1-WJ-NaB">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="127.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lth-Ub-HMX">
@@ -208,19 +208,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zIj-lG-oM4">
-                                            <rect key="frame" x="8" y="8" width="359" height="335"/>
+                                            <rect key="frame" x="8" y="8" width="359" height="334.5"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="top" secondItem="bCF-Uy-hS0" secondAttribute="topMargin" id="HNN-jt-jJl"/>
-                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="trailing" secondItem="bCF-Uy-hS0" secondAttribute="trailingMargin" id="l83-Rv-iyr"/>
-                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="centerY" secondItem="bCF-Uy-hS0" secondAttribute="centerY" id="xQJ-gG-Wk4"/>
-                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="leading" secondItem="bCF-Uy-hS0" secondAttribute="leadingMargin" id="ywa-UV-psF"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="zIj-lG-oM4" secondAttribute="bottom" id="3CH-8M-4vG"/>
+                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="top" secondItem="bCF-Uy-hS0" secondAttribute="topMargin" id="SKV-Dh-cqv"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="zIj-lG-oM4" secondAttribute="trailing" id="YyP-fH-RbY"/>
+                                        <constraint firstItem="zIj-lG-oM4" firstAttribute="leading" secondItem="bCF-Uy-hS0" secondAttribute="leadingMargin" id="zxg-OA-sBn"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="photo" destination="zIj-lG-oM4" id="fgQ-XD-u7U"/>
-                                    <segue destination="5X5-Nd-72V" kind="show" identifier="New Search Text" animates="NO" id="WGw-qO-SEs"/>
+                                    <segue destination="5X5-Nd-72V" kind="show" identifier="New Search Text" id="WGw-qO-SEs"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -230,12 +230,12 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <segue destination="Ciu-OA-tpd" kind="show" identifier="Show Image" animates="NO" id="jg6-fw-tAw"/>
+                        <segue destination="Ciu-OA-tpd" kind="show" identifier="Show Image" id="jg6-fw-tAw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n07-ro-yKq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1790" y="81"/>
+            <point key="canvasLocation" x="1789.5999999999999" y="80.50974512743629"/>
         </scene>
         <!--Image View Controller-->
         <scene sceneID="ZOc-KY-2Kg">

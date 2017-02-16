@@ -1,3 +1,4 @@
+
 //
 //  RecentsTableViewController.swift
 //  Smashtag
@@ -10,7 +11,7 @@ import UIKit
 
 class RecentsTableViewController: UITableViewController, UITabBarControllerDelegate {
     
-    private var userHistory = [String]() {
+    var userHistory = [String]() {
         didSet {
             self.tableView.reloadData()
         }
@@ -20,7 +21,20 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if tabBarController.selectedIndex == Storyboard.RecentsTabBarIdentifier {
-            userHistory = ttvc.recentsSearch
+            if let destinationvc = viewController as? UINavigationController {
+                destinationvc.popToRootViewController(animated: true)
+                if let rootvc = destinationvc.viewControllers.first as? RecentsTableViewController {
+                    rootvc.userHistory = ttvc.recentsSearch
+                }
+            }
+        } else {
+            if let destinationvc = viewController as? UINavigationController {
+                destinationvc.popToRootViewController(animated: true)
+                if let rootvc = destinationvc.viewControllers.first as? TweetTableViewController {
+                    rootvc.searchText = nil
+                    rootvc.searchTextField.text = ""
+                }
+            }
         }
     }
     
@@ -30,18 +44,18 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
         title = Storyboard.HistoryCellIdentifier
         self.tabBarController?.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
-
+        
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userHistory.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.HistoryCellIdentifier, for: indexPath)
         
         cell.textLabel?.text = userHistory[indexPath.row]
-
+        
         return cell
     }
     
@@ -56,11 +70,11 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
         
         if let mrttvc = destinationvc as? MostRecentsTweetsTableViewController {
             if segue.identifier == Storyboard.MostRecentsTweetsCellIdentifier {
-                 if let cell = sender as? UITableViewCell {
+                if let cell = sender as? UITableViewCell {
                     mrttvc.searchText = cell.textLabel?.text
                 }
             }
         }
     }
-
+    
 }

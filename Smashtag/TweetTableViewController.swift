@@ -28,7 +28,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
             UserDefaults.standard.set(mostRecents, forKey: UserDefaultsSettings.Key)
         }
     }
-
+    
     var tweets = [Array<Twitter.Tweet>]() {
         didSet {
             tableView.reloadData()
@@ -69,12 +69,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
             }
         }
     }
-
+    
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if tabBarController.selectedIndex == Storyboard.SearchTabBarIdentifier {
             searchText = nil
             searchTextField.text = ""
-            
         }
     }
     
@@ -83,18 +82,19 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.delegate = self
+        self.dismiss(animated: true, completion: nil)
     }
-
+    
     // MARK: - UITableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return tweets.count
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets[section].count
     }
-
+    
     private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
         static let ShowTweetSegue = "Show Details"
@@ -108,7 +108,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         if let tweetCell = cell as? TweetTableViewCell {
             tweetCell.tweet = tweet
         }
-
+        
         return cell
     }
     
@@ -118,7 +118,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
             searchTextField.text = searchText
         }
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         searchText = textField.text
@@ -127,7 +127,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
-
+        
         if let tdtvc = destinationvc as? TweetDetailTableViewController {
             if segue.identifier == Storyboard.ShowTweetSegue {
                 if (sender as? UITableViewCell) != nil {
