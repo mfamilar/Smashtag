@@ -70,13 +70,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         }
     }
     
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if tabBarController.selectedIndex == Storyboard.SearchTabBarIdentifier {
-            searchText = nil
-            searchTextField.text = ""
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight

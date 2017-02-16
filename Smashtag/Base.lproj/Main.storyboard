@@ -41,6 +41,10 @@
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sak-2R-SnN">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="60" id="mvc-av-HPn"/>
+                                                                <constraint firstAttribute="width" constant="60" id="zea-Kw-Bw4"/>
+                                                            </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wHE-7q-412">
                                                             <rect key="frame" x="0.0" y="60" width="60" height="52"/>
@@ -80,6 +84,7 @@
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="trailing" secondItem="iI1-WJ-NaB" secondAttribute="trailingMargin" id="TfU-24-0cr"/>
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="centerY" secondItem="iI1-WJ-NaB" secondAttribute="centerY" id="ahT-hs-As7"/>
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="top" secondItem="iI1-WJ-NaB" secondAttribute="topMargin" id="cak-zD-ZDY"/>
+                                        <constraint firstItem="lth-Ub-HMX" firstAttribute="bottom" secondItem="iI1-WJ-NaB" secondAttribute="bottomMargin" id="n9Z-dY-AZ5"/>
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="leading" secondItem="iI1-WJ-NaB" secondAttribute="leadingMargin" id="x9g-uv-rh1"/>
                                     </constraints>
                                 </tableViewCellContentView>
