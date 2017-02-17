@@ -27,7 +27,7 @@ class TweetTableViewCell: UITableViewCell {
             let color = colors[highlight.keyword.characters.first!] ?? UIColor.black
             textLabel.addAttribute(NSForegroundColorAttributeName, value:color, range:highlight.nsrange)
             tweetTextLabel?.attributedText = textLabel
-    
+            
         }
     }
     
@@ -59,7 +59,7 @@ class TweetTableViewCell: UITableViewCell {
             }
         }
         
-
+        
         var tweetUserName: String {
             return tweet?.user.description ?? ""
         }
@@ -71,7 +71,7 @@ class TweetTableViewCell: UITableViewCell {
             let lastprofileImageURL = profileImageURL
             DispatchQueue.global(qos: .userInteractive).async {
                 DispatchQueue.main.async { [weak weakSelf = self] in
-                    if profileImageURL == lastprofileImageURL {   
+                    if profileImageURL == lastprofileImageURL {
                         if let imageData = NSData(contentsOf: profileImageURL as URL) {
                             weakSelf?.tweetProfileImageView?.image = UIImage(data: imageData as Data)
                         }
@@ -88,5 +88,5 @@ class TweetTableViewCell: UITableViewCell {
         }
         tweetCreatedLabel?.text = formatter.string(from: tweet?.created as! Date)
     }
-
+    
 }

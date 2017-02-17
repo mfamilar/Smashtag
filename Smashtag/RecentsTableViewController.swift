@@ -11,7 +11,7 @@ import UIKit
 
 class RecentsTableViewController: UITableViewController, UITabBarControllerDelegate {
     
-    var userHistory = [String]() {
+    private var userHistory = [String]() {
         didSet {
             self.tableView.reloadData()
         }
@@ -24,7 +24,7 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
             if let destinationvc = viewController as? UINavigationController {
                 destinationvc.popToRootViewController(animated: true)
                 if let rootvc = destinationvc.viewControllers.first as? RecentsTableViewController {
-                    rootvc.userHistory = ttvc.recentsSearch
+                    rootvc.userHistory = ttvc.recentSearches
                 }
             }
         } else {
@@ -40,7 +40,7 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        userHistory = ttvc.recentsSearch
+        userHistory = ttvc.recentSearches
         title = Storyboard.HistoryCellIdentifier
         self.tabBarController?.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -68,12 +68,10 @@ class RecentsTableViewController: UITableViewController, UITabBarControllerDeleg
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
         
-        if let mrttvc = destinationvc as? MostRecentsTweetsTableViewController {
-            if segue.identifier == Storyboard.MostRecentsTweetsCellIdentifier {
-                if let cell = sender as? UITableViewCell {
-                    mrttvc.searchText = cell.textLabel?.text
-                }
-            }
+        if let mrttvc = destinationvc as? MostRecentsTweetsTableViewController,
+            segue.identifier == Storyboard.MostRecentsTweetsCellIdentifier,
+            let cell = sender as? UITableViewCell {
+            mrttvc.searchText = cell.textLabel?.text
         }
     }
     

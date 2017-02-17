@@ -11,13 +11,13 @@ import UIKit
 import Twitter
 
 class MostRecentsTweetsTableViewController: UITableViewController {
-
-    var tweets = [Tweet]() {
+    
+    private var tweets = [Tweet]() {
         didSet {
             tableView.reloadData()
         }
     }
-
+    
     var searchText: String? {
         didSet {
             tweets.removeAll()
@@ -33,14 +33,12 @@ class MostRecentsTweetsTableViewController: UITableViewController {
         return nil
     }
     
-    private var lastTwitterRequest: TwitterRequest?
-    
     private func searchForTweets() {
         if let request = twitterRequest {
-            lastTwitterRequest = request
+            let lastTwitterRequest = request
             request.fetchTweets { [weak weakSelf = self] newTweets in
                 DispatchQueue.main.async {
-                    if request === weakSelf?.lastTwitterRequest {
+                    if request === lastTwitterRequest {
                         if !newTweets.isEmpty {
                             for tweet in newTweets  {
                                 weakSelf?.tweets.append(tweet)
@@ -51,7 +49,7 @@ class MostRecentsTweetsTableViewController: UITableViewController {
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
@@ -61,7 +59,7 @@ class MostRecentsTweetsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets.count
     }
-
+    
     private struct Storyboard {
         static let TweetsCellIdentifier = "Tweets"
     }

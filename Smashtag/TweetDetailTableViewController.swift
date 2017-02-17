@@ -25,14 +25,7 @@ class TweetDetailTableViewController: UITableViewController {
     var tweet: Twitter.Tweet? {
         didSet {
             getData()
-            title = tweet?.user.name
         }
-    }
-    
-    private struct Storyboard {
-        static let Details = "Details"
-        static let NewSearchText = "New Search Text"
-        static let ShowImage = "Show Image"
     }
     
     private func fetchImage() {
@@ -82,6 +75,7 @@ class TweetDetailTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = tweet?.user.name
     }
     
     override func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval)
@@ -113,17 +107,35 @@ class TweetDetailTableViewController: UITableViewController {
         return details[section].count
     }
     
+    private struct Storyboard {
+        static let Details = "Details"
+        static let NewSearchText = "New Search Text"
+        static let ShowImage = "Show Image"
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.Details, for: indexPath)
-        let details = self.details[indexPath.section][indexPath.row]
+        let tweetDetails = self.details[indexPath.section][indexPath.row]
         
-        if let tweetDetail = cell as? TweetDetailTableViewCell {
-            tweetDetail.detail = details
+        if let tdtvc = cell as? TweetDetailTableViewCell {
+            tdtvc.detail = tweetDetails
         }
         
         return cell
     }
     
+    enum DataType {
+        case Image
+        case Hashtag
+        case User
+        case URL
+    }
+    
+    private var dataType: Dictionary<Character, DataType> = [
+        "@" :   .User,
+        "#" :   .Hashtag,
+        "h" :   .URL,
+        ]
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
@@ -142,19 +154,6 @@ class TweetDetailTableViewController: UITableViewController {
         }
     }
     
-    enum DataType {
-        case Image
-        case Hashtag
-        case User
-        case URL
-    }
-    
-    private var dataType: Dictionary<Character, DataType> = [
-        "@" :   .User,
-        "#" :   .Hashtag,
-        "h" :   .URL,
-        ]
-    
     override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
         return false
     }
@@ -162,21 +161,15 @@ class TweetDetailTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
         
-        if segue.identifier == Storyboard.NewSearchText {
-            if let ttvc = destinationvc as? TweetTableViewController {
-                if let newSearchText = sender as? String {
-                    ttvc.searchText = newSearchText
-                }
-            }
+        if segue.identifier == Storyboard.NewSearchText,
+            let ttvc = destinationvc as? TweetTableViewController,
+            let newSearchText = sender as? String {
+            ttvc.searchText = newSearchText
         }
-        else if segue.identifier == Storyboard.ShowImage {
-            if let ivc = destinationvc as? ImageViewController {
-                if let image = sender as? UIImage {
-                    ivc.image = image
-                }
-            }
+        else if segue.identifier == Storyboard.ShowImage,
+            let ivc = destinationvc as? ImageViewController,
+            let image = sender as? UIImage {
+            ivc.image = image
         }
-        
     }
-    
 }

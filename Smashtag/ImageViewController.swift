@@ -9,7 +9,7 @@
 import UIKit
 
 class ImageViewController: UIViewController, UIScrollViewDelegate {
-
+    
     private var imageView = UIImageView()
     
     @IBOutlet weak var scrollView: UIScrollView! {
@@ -19,11 +19,11 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             scrollView.maximumZoomScale = 1.5
         }
     }
-
+    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
-
+    
     var image: UIImage?
     
     override func viewDidLoad() {

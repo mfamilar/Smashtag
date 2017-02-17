@@ -10,7 +10,7 @@ import UIKit
 import Twitter
 
 class TweetDetailTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var photo: UIImageView!
     
     var detail: AnyObject? {

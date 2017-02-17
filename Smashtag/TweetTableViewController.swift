@@ -12,11 +12,11 @@ import Twitter
 class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
     
     private struct UserDefaultsSettings {
-        static let Key = "Recents"
+        static let Key = "Latest Tweets"
         static let MaxSizeHistory = 100
     }
     
-    var recentsSearch: [String] {
+    var recentSearches: [String] {
         get {
             return UserDefaults.standard.object(forKey: UserDefaultsSettings.Key) as? [String] ?? []
         }
@@ -29,7 +29,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         }
     }
     
-    var tweets = [Array<Twitter.Tweet>]() {
+    private var tweets = [Array<Twitter.Tweet>]() {
         didSet {
             tableView.reloadData()
         }
@@ -38,7 +38,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     var searchText: String? {
         didSet {
             if let textToSave = searchText {
-                recentsSearch.append(textToSave)
+                recentSearches.append(textToSave)
             }
             tweets.removeAll()
             searchForTweets()
@@ -53,14 +53,12 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         return nil
     }
     
-    private var lastTwitterRequest: TwitterRequest?
-    
     private func searchForTweets() {
         if let request = twitterRequest {
-            lastTwitterRequest = request
+            let lastTwitterRequest = request
             request.fetchTweets { [weak weakSelf = self] newTweets in
                 DispatchQueue.main.async {
-                    if request === weakSelf?.lastTwitterRequest {
+                    if request === lastTwitterRequest {
                         if !newTweets.isEmpty {
                             weakSelf?.tweets.insert(newTweets, at: 0)
                         }
@@ -74,8 +72,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        self.tabBarController?.delegate = self
-        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - UITableViewDataSource
@@ -91,7 +87,6 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     private struct Storyboard {
         static let TweetCellIdentifier = "Tweet"
         static let ShowTweetSegue = "Show Details"
-        static let SearchTabBarIdentifier = 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -121,17 +116,15 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
         
-        if let tdtvc = destinationvc as? TweetDetailTableViewController {
-            if segue.identifier == Storyboard.ShowTweetSegue {
-                if (sender as? UITableViewCell) != nil {
-                    if let indexPath = self.tableView.indexPathForSelectedRow {
-                        tdtvc.tweet = tweets[indexPath.section][indexPath.row]
-                    }
-                }
-            }
+        if let tdtvc = destinationvc as? TweetDetailTableViewController,
+            segue.identifier == Storyboard.ShowTweetSegue,
+            (sender as? UITableViewCell) != nil,
+            let indexPath = self.tableView.indexPathForSelectedRow {
+            tdtvc.tweet = tweets[indexPath.section][indexPath.row]
         }
     }
 }
+
 
 extension UIViewController {
     var contentViewController: UIViewController {
