@@ -68,10 +68,22 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         }
     }
     
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let destinationvc = viewController as? UINavigationController {
+            destinationvc.popToRootViewController(animated: true)
+            if let rootvc = destinationvc.viewControllers.first as? TweetTableViewController {
+                rootvc.searchText = nil
+                rootvc.searchTextField.text = ""
+            }
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
+        self.tabBarController?.delegate = self
     }
     
     // MARK: - UITableViewDataSource

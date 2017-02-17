@@ -30,11 +30,11 @@
                                 <rect key="frame" x="0.0" y="58" width="375" height="128"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Ks-ay-57i" id="iI1-WJ-NaB">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="127"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lth-Ub-HMX">
-                                            <rect key="frame" x="8" y="8" width="359" height="112"/>
+                                            <rect key="frame" x="8" y="8.5" width="359" height="112"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bHW-DJ-bHp">
                                                     <rect key="frame" x="0.0" y="0.0" width="60" height="112"/>
@@ -82,7 +82,6 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="trailing" secondItem="iI1-WJ-NaB" secondAttribute="trailingMargin" id="TfU-24-0cr"/>
-                                        <constraint firstItem="lth-Ub-HMX" firstAttribute="centerY" secondItem="iI1-WJ-NaB" secondAttribute="centerY" id="ahT-hs-As7"/>
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="top" secondItem="iI1-WJ-NaB" secondAttribute="topMargin" id="cak-zD-ZDY"/>
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="bottom" secondItem="iI1-WJ-NaB" secondAttribute="bottomMargin" id="n9Z-dY-AZ5"/>
                                         <constraint firstItem="lth-Ub-HMX" firstAttribute="leading" secondItem="iI1-WJ-NaB" secondAttribute="leadingMargin" id="x9g-uv-rh1"/>
@@ -209,7 +208,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="351"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rdx-WR-SCG" id="bCF-Uy-hS0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="351"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zIj-lG-oM4">
@@ -225,7 +224,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="photo" destination="zIj-lG-oM4" id="fgQ-XD-u7U"/>
-                                    <segue destination="5X5-Nd-72V" kind="show" identifier="New Search Text" id="WGw-qO-SEs"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -236,6 +234,7 @@
                     </tableView>
                     <connections>
                         <segue destination="Ciu-OA-tpd" kind="show" identifier="Show Image" id="jg6-fw-tAw"/>
+                        <segue destination="5X5-Nd-72V" kind="show" identifier="New Search Text" id="XNK-I7-uTu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n07-ro-yKq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -332,6 +331,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WGw-qO-SEs"/>
+        <segue reference="XNK-I7-uTu"/>
     </inferredMetricsTieBreakers>
 </document>

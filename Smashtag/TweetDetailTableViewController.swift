@@ -154,10 +154,6 @@ class TweetDetailTableViewController: UITableViewController {
         }
     }
     
-    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
-        return false
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationvc = segue.destination.contentViewController
         
