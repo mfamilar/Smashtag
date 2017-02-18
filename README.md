@@ -21,3 +21,4 @@ This application is the result of Stanford University course "Developing iOS 9 A
 - Multithreading
 - NSUserDefaults
 - UIImageView + UIScrollView
+- UIRefreshControl

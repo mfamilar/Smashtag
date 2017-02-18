@@ -79,11 +79,20 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     }
     
     
+    private var pullToRefresh = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.delegate = self
+        pullToRefresh.addTarget(self, action: #selector(self.refreshTweets(sender:)), for: UIControlEvents.valueChanged)
+        tableView.addSubview(pullToRefresh)
+    }
+    
+    func refreshTweets(sender:AnyObject) {
+        pullToRefresh.endRefreshing()
+        searchForTweets()
     }
     
     // MARK: - UITableViewDataSource
