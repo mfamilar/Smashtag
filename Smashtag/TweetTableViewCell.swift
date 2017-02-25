@@ -70,9 +70,9 @@ class TweetTableViewCell: UITableViewCell {
         if let profileImageURL = tweet?.user.profileImageURL {
             let lastprofileImageURL = profileImageURL
             DispatchQueue.global(qos: .userInteractive).async {
-                DispatchQueue.main.async { [weak weakSelf = self] in
-                    if profileImageURL == lastprofileImageURL {
-                        if let imageData = NSData(contentsOf: profileImageURL as URL) {
+                if let imageData = NSData(contentsOf: profileImageURL as URL) {
+                    DispatchQueue.main.async { [weak weakSelf = self] in
+                        if profileImageURL == lastprofileImageURL {
                             weakSelf?.tweetProfileImageView?.image = UIImage(data: imageData as Data)
                         }
                     }

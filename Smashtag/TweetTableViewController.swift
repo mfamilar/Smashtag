@@ -87,6 +87,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tabBarController?.delegate = self
         pullToRefresh.addTarget(self, action: #selector(self.refreshTweets(sender:)), for: UIControlEvents.valueChanged)
+        pullToRefresh.backgroundColor = UIColor.white
         tableView.addSubview(pullToRefresh)
     }
     
