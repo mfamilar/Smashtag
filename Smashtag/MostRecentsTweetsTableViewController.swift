@@ -12,7 +12,7 @@ import Twitter
 
 class MostRecentsTweetsTableViewController: UITableViewController {
     
-    private var tweets = [Tweet]() {
+    private var tweets = Array<Twitter.Tweet>() {
         didSet {
             tableView.reloadData()
         }

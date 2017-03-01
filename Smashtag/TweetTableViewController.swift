@@ -11,6 +11,8 @@ import Twitter
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
     
+    var managedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+    
     private struct UserDefaultsSettings {
         static let Key = "Latest Tweets"
         static let MaxSizeHistory = 100
@@ -61,9 +63,23 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
                     if request === lastTwitterRequest {
                         if !newTweets.isEmpty {
                             weakSelf?.tweets.insert(newTweets, at: 0)
+                            weakSelf?.updateDatabase(newTweets: newTweets)
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    private func updateDatabase(newTweets: [Twitter.Tweet]) {
+        self.managedObjectContext?.perform {
+            for twitterInfo in newTweets {
+                _ = Tweet.tweetWithTwitterInfo(twitterInfo: twitterInfo, inManagedObjectContext: self.managedObjectContext!)
+            }
+            do {
+                try self.managedObjectContext?.save()
+            } catch let error {
+                print("Core Data Error: \(error)")
             }
         }
     }

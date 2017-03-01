@@ -22,7 +22,7 @@ class TweetTableViewCell: UITableViewCell {
         }
     }
     
-    private func highlightTweetTextLabel(textLabel: NSMutableAttributedString, textToHighlight: [Tweet.IndexedKeyword]) {
+    private func highlightTweetTextLabel(textLabel: NSMutableAttributedString, textToHighlight: [Twitter.Tweet.IndexedKeyword]) {
         for highlight in textToHighlight {
             let color = colors[highlight.keyword.characters.first!] ?? UIColor.black
             textLabel.addAttribute(NSForegroundColorAttributeName, value:color, range:highlight.nsrange)
