@@ -13,7 +13,6 @@
 Smashtag is a little Twitter client for iOS. <br/><br/>
 This application is the result of Stanford University course "Developing iOS 9 Apps with Swift" : https://itunes.apple.com/us/course/developing-ios-9-apps-swift/id1104579961 
 
-
 ## Basic concepts
 - NSAttributedString
 - UITableView + UITableViewCell
