@@ -8,6 +8,7 @@
 
 import UIKit
 import Twitter
+import CoreData
 
 class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITabBarControllerDelegate {
     
@@ -72,7 +73,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate, UITa
     }
     
     private func updateDatabase(newTweets: [Twitter.Tweet]) {
-        self.managedObjectContext?.perform {
+        managedObjectContext?.perform {
             for twitterInfo in newTweets {
                 _ = Tweet.tweetWithTwitterInfo(twitterInfo: twitterInfo, inManagedObjectContext: self.managedObjectContext!)
             }
