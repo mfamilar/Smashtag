@@ -13,21 +13,22 @@ import Twitter
 
 @objc(HashtagMentions)
 public class HashtagMentions: NSManagedObject {
-    
     class func hashtagMentionsWithTwitterInfo(twitterInfo: Twitter.Tweet, inManagedObjectContext context: NSManagedObjectContext) -> HashtagMentions? {
+        print("        USER = \(twitterInfo.user.name)")
         for hashtag in twitterInfo.hashtags {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "HashtagMention")
-            request.predicate = NSPredicate(format: "mention = %@", hashtag.keyword)
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "HashtagMentions")
+            request.predicate = NSPredicate(format: "text = %@", hashtag.keyword)
             if let hashtagMention = (try? context.fetch(request))?.first as? HashtagMentions {
                 hashtagMention.count += 1
-                return hashtagMention
-            } else if let hashtagMention = NSEntityDescription.insertNewObject(forEntityName: "HashtagMention", into: context) as? HashtagMentions {
+                print("        COUNT = \( hashtagMention.count)          ")
+                return hashtagMention }
+            if let hashtagMention = NSEntityDescription.insertNewObject(forEntityName: "HashtagMentions", into: context) as? HashtagMentions {
                 hashtagMention.text = hashtag.keyword
                 hashtagMention.count = 1
+                print("        HASH = \( hashtag.keyword)")
                 return hashtagMention
             }
         }
         return nil
-        
     }
 }

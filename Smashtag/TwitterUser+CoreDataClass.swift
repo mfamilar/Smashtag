@@ -2,7 +2,7 @@
 //  TwitterUser+CoreDataClass.swift
 //  Smashtag
 //
-//  Created by Marc FAMILARI on 3/1/17.
+//  Created by Marc FAMILARI on 3/2/17.
 //  Copyright © 2017 Marc FAMILARI. All rights reserved.
 //  This file was automatically generated and should not be edited.
 //
@@ -13,7 +13,6 @@ import Twitter
 
 @objc(TwitterUser)
 public class TwitterUser: NSManagedObject {
-
     class func twitterUserWithTwitterInfo(twitterInfo: Twitter.User, inManagedObjectContext context: NSManagedObjectContext) -> TwitterUser? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "TwitterUser")
         request.predicate = NSPredicate(format: "screenName = %@", twitterInfo.screenName)
@@ -26,5 +25,4 @@ public class TwitterUser: NSManagedObject {
         }
         return nil
     }
-    
 }

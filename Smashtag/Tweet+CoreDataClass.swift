@@ -25,7 +25,6 @@ public class Tweet: NSManagedObject {
             tweet.unique = twitterInfo.id
             tweet.posted = twitterInfo.created
             tweet.tweeter = TwitterUser.twitterUserWithTwitterInfo(twitterInfo: twitterInfo.user, inManagedObjectContext: context)
-            print("NAME = \(twitterInfo.user.screenName)")
             tweet.mentions = HashtagMentions.hashtagMentionsWithTwitterInfo(twitterInfo: twitterInfo, inManagedObjectContext: context)
             return tweet
         }

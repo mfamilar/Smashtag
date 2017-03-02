@@ -2,7 +2,7 @@
 //  TwitterUser+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Marc FAMILARI on 3/1/17.
+//  Created by Marc FAMILARI on 3/2/17.
 //  Copyright © 2017 Marc FAMILARI. All rights reserved.
 //  This file was automatically generated and should not be edited.
 //
@@ -17,8 +17,8 @@ extension TwitterUser {
         return NSFetchRequest<TwitterUser>(entityName: "TwitterUser");
     }
 
-    @NSManaged public var screenName: String?
     @NSManaged public var name: String?
+    @NSManaged public var screenName: String?
     @NSManaged public var tweets: NSSet?
 
 }
