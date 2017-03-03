@@ -2,7 +2,7 @@
 //  TwitterUser+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by Marc FAMILARI on 3/2/17.
+//  Created by Marc FAMILARI on 3/3/17.
 //  Copyright © 2017 Marc FAMILARI. All rights reserved.
 //  This file was automatically generated and should not be edited.
 //
@@ -20,6 +20,7 @@ extension TwitterUser {
     @NSManaged public var name: String?
     @NSManaged public var screenName: String?
     @NSManaged public var tweets: NSSet?
+    @NSManaged public var hashtagMentions: NSSet?
 
 }
 
@@ -37,5 +38,22 @@ extension TwitterUser {
 
     @objc(removeTweets:)
     @NSManaged public func removeFromTweets(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for hashtagMentions
+extension TwitterUser {
+
+    @objc(addHashtagMentionsObject:)
+    @NSManaged public func addToHashtagMentions(_ value: HashtagMention)
+
+    @objc(removeHashtagMentionsObject:)
+    @NSManaged public func removeFromHashtagMentions(_ value: HashtagMention)
+
+    @objc(addHashtagMentions:)
+    @NSManaged public func addToHashtagMentions(_ values: NSSet)
+
+    @objc(removeHashtagMentions:)
+    @NSManaged public func removeFromHashtagMentions(_ values: NSSet)
 
 }
